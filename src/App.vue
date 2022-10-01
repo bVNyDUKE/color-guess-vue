@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 import {defineComponent} from 'vue'
 export default defineComponent({
   data(){
     return{
       colors: this.makeColorsList(),
-      isCorrect: undefined,
+      isCorrect: undefined as undefined | boolean,
     }
   },
 
@@ -15,7 +15,7 @@ export default defineComponent({
   },
 
   methods:{
-    handleGuess(guess){
+    handleGuess(guess: string){
       if(guess === this.correctGuess){
         this.isCorrect = true
         this.colors = this.makeColorsList()
