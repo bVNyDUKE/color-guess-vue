@@ -1,42 +1,52 @@
-<script setup lang="ts">
+<script>
+import {defineComponent} from 'vue'
+export default defineComponent({
+  data(){
+    return{
+      colors: this.makeColorsList(),
+      isCorrect: undefined,
+    }
+  },
 
-const generateColor = () => {
-  const hexChars = "0123456789ABCDEF";
-  const getChar = () => hexChars.charAt(Math.floor(Math.random() * hexChars.length))
+  computed: {
+    correctGuess(){
+      return this.colors[Math.floor(Math.random() * this.colors.length)]
+    }
+  },
 
-  let generatedColor = "#"
+  methods:{
+    handleGuess(guess){
+      if(guess === this.correctGuess){
+        this.isCorrect = true
+        this.colors = this.makeColorsList()
+        return
+      }
 
-  for (let i = 0; i < 6; i++) {
-    generatedColor += getChar();
-  }
+      this.isCorrect = false
+    },
+    generateColor(){
+      const hexChars = "0123456789ABCDEF";
+      const getChar = () => hexChars.charAt(Math.floor(Math.random() * hexChars.length))
 
-  return generatedColor;
-}
+      let generatedColor = "#"
 
-const makeColorsList = () => {
-  let colors = []
-  for (let i = 0; i < 3; i++) {
-    colors.push(generateColor())
-  }
+      for (let i = 0; i < 6; i++) {
+        generatedColor += getChar();
+      }
 
-  return colors;
-}
+      return generatedColor;
+    },
+     makeColorsList(){
+      let colors = []
+      for (let i = 0; i < 3; i++) {
+        colors.push(this.generateColor())
+      }
 
-let colors = $ref(makeColorsList())
-let isCorrect = $ref<undefined | boolean>()
-let correctGuess = $computed(() => colors[Math.floor(Math.random() * 3)] )
+      return colors;
+    }
+  },
 
-const handleGuess = (guess: string) => {
-  if(guess === correctGuess){
-    isCorrect = true
-    colors = makeColorsList()
-    return
-  }
-
-  isCorrect = false
-
-}
-
+})
 </script>
 
 <template>
